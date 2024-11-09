@@ -1,0 +1,76 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define ARMARIOS 8
+
+void ocupar(int *status, int armario){
+    *status = *status | (1<<armario);
+}
+void desocupar(int *status, int armario){
+    *status = *status & ~(1<<armario);
+}
+int ja_ocupado(int status, int armario){
+    return status & (1<<armario);
+}
+void estado_armario(int status){
+    int preenchido = 0;
+    for(int i = 0; i < ARMARIOS;i++){
+        if(ja_ocupado(status,i)){
+            printf("Armarios ocupados -> %d \n",i);
+            preenchido = preenchido +1;
+        }
+        else{
+            printf("Armarios livres-> %d \n",i);
+        }
+    }
+    if(preenchido == 8){
+                printf("Todos os armarios estao ocupados");
+            }
+}
+int sistema(){
+    int status = 0;
+    int opcao = 0;
+    puts("Digite 1 para ocupar um armario \n Digite 2 para desocupar um armario \n Digite 3 para sair");
+    while(opcao!=3){
+        scanf("%d",&opcao);
+        switch(opcao){
+            case 1:
+            unsigned char armario = rand() % ARMARIOS;
+            printf("Armario a ser ocupado -> %d \n",armario);
+            for(int i = 0; i < ARMARIOS;i++){
+                if(ja_ocupado(status,armario) == armario){
+                    unsigned char armario = rand() % ARMARIOS;     
+                }
+                else{
+                    ocupar(&status,armario);   
+                }           
+            }
+            ocupar(&status,armario);
+            estado_armario(status);           
+            break;
+            case 2:
+            puts("Digite o numero do armario que deseja desocupar");
+            scanf("%hhd",&armario);
+            for(int i = 0; i < ARMARIOS;i++){
+                if(ja_ocupado(status,armario) == (1<<armario)){
+                    desocupar(&status,armario);
+                    printf("Armario %d desocupado \n",armario); 
+                }        
+            } 
+            estado_armario(status);  
+            break;
+            case 3:
+            printf("Programa encerrado.");
+            return 0;
+            break;
+            default:
+            printf("Entrada invalida.");
+            break;
+        }
+    }
+}
+int main(){
+    srand(time(NULL)); 
+    sistema();
+    return 0;
+}
